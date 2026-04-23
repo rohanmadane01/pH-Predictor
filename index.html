@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>pH VALUE PREDICTOR</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* WHITE TEXTURE BACKGROUND */
+
+body{
+    min-height:100vh;
+    background:
+    linear-gradient(135deg,#f8f9fa,#e9ecef,#dee2e6);
+    background-size:400% 400%;
+    animation:bg 10s infinite;
+    overflow-x:hidden;
+    color:#222;
+}
+
+@keyframes bg{
+    0%{background-position:0%}
+    50%{background-position:100%}
+    100%{background-position:0%}
+}
+
+/* Decorative Shapes */
+
+.shape{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(60px);
+    opacity:0.3;
+}
+
+.shape1{
+    width:250px;
+    height:250px;
+    background:#00c6ff;
+    top:-50px;
+    left:-50px;
+}
+
+.shape2{
+    width:300px;
+    height:300px;
+    background:#ffb703;
+    bottom:-100px;
+    right:-100px;
+}
+
+/* HEADER */
+
+header{
+    text-align:center;
+    padding:30px;
+}
+
+header h1{
+    font-size:3rem;
+    color:#0077b6;
+    text-shadow:0 0 10px rgba(0,119,182,0.3);
+}
+
+header p{
+    margin-top:10px;
+    font-size:1.1rem;
+}
+
+/* MAIN CARD */
+
+.container{
+    width:400px;
+    margin:auto;
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(15px);
+    padding:25px;
+    border-radius:25px;
+    box-shadow:0 0 20px rgba(0,0,0,0.15);
+    text-align:center;
+}
+
+/* CHEMISTRY IMAGE */
+
+.chem-image{
+    width:140px;
+    animation:float 3s infinite ease-in-out;
+}
+
+@keyframes float{
+    0%{transform:translateY(0px)}
+    50%{transform:translateY(-10px)}
+    100%{transform:translateY(0px)}
+}
+
+/* INPUTS */
+
+select,input{
+    width:90%;
+    padding:12px;
+    margin:12px;
+    border-radius:12px;
+    border:1px solid #ccc;
+    font-size:1rem;
+}
+
+/* BUTTON */
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(to right,#0077b6,#00b4d8);
+    color:white;
+    font-size:1rem;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+/* RESULT */
+
+.result{
+    margin-top:20px;
+    font-size:1.2rem;
+    font-weight:bold;
+}
+
+/* pH SCALE */
+
+.scale{
+    display:flex;
+    height:25px;
+    margin-top:25px;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.scale div{
+    flex:1;
+}
+
+.pointer{
+    width:12px;
+    height:35px;
+    background:#000;
+    margin:auto;
+    border-radius:10px;
+    transition:1s;
+}
+
+/* DETAIL CARDS */
+
+.info{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    margin-top:40px;
+    padding:20px;
+}
+
+.card{
+    width:280px;
+    padding:20px;
+    border-radius:20px;
+    background:white;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:80px;
+    margin-bottom:10px;
+}
+
+.card h2{
+    color:#0077b6;
+    margin-bottom:10px;
+}
+
+/* THEORY SECTION */
+
+.theory{
+    width:90%;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+    line-height:1.8;
+}
+
+.theory h2{
+    color:#0077b6;
+    margin-bottom:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+
+<header>
+    <h1>🧪 pH VALUE PREDICTOR</h1>
+    <p>Interactive Chemistry Project for Predicting pH Values</p>
+</header>
+
+<!-- MAIN CONTAINER -->
+
+<div class="container">
+
+<img class="chem-image"
+src="https://cdn-icons-png.flaticon.com/512/2784/2784487.png">
+
+<select id="type">
+
+<option value="strong_acid">Strong Acid (HCl)</option>
+
+<option value="weak_acid">Weak Acid (CH₃COOH)</option>
+
+<option value="strong_base">Strong Base (NaOH)</option>
+
+<option value="weak_base">Weak Base (NH₃)</option>
+
+<option value="neutral">Neutral Water</option>
+
+</select>
+
+<input type="number" id="conc"
+placeholder="Enter concentration (e.g. 0.1)">
+
+<button onclick="calculatePH()">
+PREDICT pH
+</button>
+
+<div class="result" id="output"></div>
+
+<!-- pH SCALE -->
+<div class="scale">
+<div style="background:red"></div>
+<div style="background:orange"></div>
+<div style="background:yellow"></div>
+<div style="background:lightgreen"></div>
+<div style="background:green"></div>
+<div style="background:cyan"></div>
+<div style="background:blue"></div>
+<div style="background:purple"></div>
+</div>
+
+<div class="pointer" id="pointer"></div>
+
+</div>
+
+<!-- INFO CARDS -->
+
+<div class="info">
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/2913/2913465.png">
+<h2>ACIDIC SOLUTION</h2>
+<p>pH less than 7</p>
+<p>Sour in taste</p>
+<p>Releases H⁺ ions</p>
+<p>Examples: HCl, H₂SO₄</p>
+</div>
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/6195/6195700.png">
+<h2>BASIC SOLUTION</h2>
+<p>pH greater than 7</p>
+<p>Bitter and slippery</p>
+<p>Releases OH⁻ ions</p>
+<p>Examples: NaOH, NH₃</p>
+</div>
+
+<div class="card">
+<img src="https://cdn-icons-png.flaticon.com/512/3105/3105807.png">
+<h2>NEUTRAL SOLUTION</h2>
+<p>pH equal to 7</p>
+<p>Balanced nature</p>
+<p>Neither acidic nor basic</p>
+<p>Example: Pure water</p>
+</div>
+
+</div>
+
+<!-- THEORY SECTION -->
+
+<div class="theory">
+
+<h2>📚 ABOUT THE PROJECT</h2>
+
+<p>
+The pH Value Predictor is an interactive chemistry-based web project
+used to estimate the pH value of acids, bases and neutral solutions.
+The project uses mathematical and logarithmic formulas of chemistry
+to determine whether a solution is acidic, basic or neutral.
+</p>
+
+<br>
+
+<h2>⚗️ WHAT IS pH?</h2>
+
+<p>
+pH stands for “Potential of Hydrogen”.
+It measures the concentration of hydrogen ions (H⁺) present in a solution.
+The pH scale ranges from 0 to 14.
+</p>
+
+<ul>
+<li><b>pH &lt; 7</b> → Acidic</li>
+<li><b>pH = 7</b> → Neutral</li>
+<li><b>pH &gt; 7</b> → Basic</li>
+</ul>
+
+<br>
+
+<h2>🧪 FORMULAS USED</h2>
+
+<p><b>Strong Acid:</b> pH = -log[H⁺]</p>
+
+<p><b>Strong Base:</b> pH = 14 - pOH</p>
+
+<p><b>Weak Acid/Base:</b>
+Uses equilibrium constants Ka and Kb.
+</p>
+
+<br>
+
+<h2>🌍 REAL LIFE APPLICATIONS</h2>
+
+<ul>
+<li>Checking soil quality in agriculture</li>
+<li>Water purification systems</li>
+<li>Medical and biological analysis</li>
+<li>Food and beverage industry</li>
+<li>Chemical laboratory testing</li>
+</ul>
+
+<br>
+
+<h2>💡 PROJECT FEATURES</h2>
+
+<ul>
+<li>Interactive pH prediction</li>
+<li>Colorful pH scale visualization</li>
+<li>Creative chemistry UI design</li>
+<li>Real chemistry formulas</li>
+<li>Responsive website design</li>
+</ul>
+
+</div>
+
+<script>
+
+function calculatePH(){
+
+let type=document.getElementById("type").value;
+let c=parseFloat(document.getElementById("conc").value);
+
+let ph;
+
+if(type==="neutral"){
+    ph=7;
+}
+
+else if(isNaN(c)||c<=0){
+    document.getElementById("output").innerHTML=
+    "⚠️ Enter valid concentration";
+    return;
+}
+
+else if(type==="strong_acid"){
+    ph=-Math.log10(c);
+}
+
+else if(type==="weak_acid"){
+    let Ka=1.8e-5;
+    let H=Math.sqrt(Ka*c);
+    ph=-Math.log10(H);
+}
+
+else if(type==="strong_base"){
+    let pOH=-Math.log10(c);
+    ph=14-pOH;
+}
+
+else if(type==="weak_base"){
+    let Kb=1.8e-5;
+    let OH=Math.sqrt(Kb*c);
+    let pOH=-Math.log10(OH);
+    ph=14-pOH;
+}
+
+ph=ph.toFixed(2);
+
+let nature="";
+
+if(ph<7){
+    nature="ACIDIC";
+}
+else if(ph>7){
+    nature="BASIC";
+}
+else{
+    nature="NEUTRAL";
+}
+
+document.getElementById("output").innerHTML=
+pH VALUE = ${ph}<br>NATURE = ${nature};
+
+let pointer=document.getElementById("pointer");
+
+let position=(ph/14)*280;
+
+pointer.style.transform=
+translateX(${position-140}px);
+
+}
+
+</script>
+
+</body>
+</html>
